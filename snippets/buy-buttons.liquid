@@ -98,6 +98,12 @@
             </span>
             {%- render 'loading-spinner' -%}
           </button>
+          {% comment %} If there're less than 5, display "Low stock" {% endcomment %}
+          {% if product.selected_or_first_available_variant.inventory_quantity < 5 %}
+            <p class="stock-status">Low stock</p>
+          {% elsif product.selected_or_first_available_variant.inventory_quantity >= 5 %}
+            <p class="stock-status">Available!</p>
+          {% endif %}
           {%- if show_dynamic_checkout -%}
             {{ form | payment_button }}
           {%- endif -%}
