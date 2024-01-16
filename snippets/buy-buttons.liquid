@@ -104,6 +104,33 @@
           {% elsif product.selected_or_first_available_variant.inventory_quantity >= 5 %}
             <p class="stock-status">Available!</p>
           {% endif %}
+          {% comment %} end of task b {% endcomment %}
+          {% comment %} start of task c {% endcomment %}
+          <!-- Display the size description for the selected variant -->
+          <div id="size-description" class="product-form__metafield">
+            {% assign selected_variant = product.selected_or_first_available_variant %}
+            {% if selected_variant %}
+              {% assign size_metafield_key = 'description_' | append: selected_variant.option1 | downcase %}
+              <p>{{ product.metafields.size[size_metafield_key] }}</p>
+            {% endif %}
+          </div>
+
+          <!-- JavaScript to update size description when another variant is selected -->
+          <script>
+            const sizeButtons = document.querySelectorAll('.size-button');
+            const sizeDescriptionContainer = document.getElementById('size-description');
+
+            function handleClick(event) {
+              const selectedVariant = event.target.value;
+              const sizeMetafieldKey = 'description_' + selectedVariant.toLowerCase();
+              sizeDescriptionContainer.innerHTML = `<p>これは${selectedVariant}サイズです。</p>`;
+            }
+
+            sizeButtons.forEach((button) => {
+              button.addEventListener('click', handleClick);
+            });
+          </script>
+          {% comment %} end of task c {% endcomment %}
           {%- if show_dynamic_checkout -%}
             {{ form | payment_button }}
           {%- endif -%}

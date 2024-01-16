@@ -52,7 +52,7 @@
     elsif value.swatch.color
       assign swatch_value = 'rgb(' | append: value.swatch.color.rgb | append: ')'
     else
-      assign swatch_value = nil
+      assign swatch_value = null
     endif
   -%}
 
@@ -89,6 +89,9 @@
       name="{{ option.name }}"
       value="{{ value | escape }}"
       form="{{ product_form_id }}"
+      value="{{ variant.option1 }}"
+      {% comment %} Manually added {% endcomment %}
+      class="size-button"
       {% if option.selected_value == value %}
         checked
       {% endif %}
