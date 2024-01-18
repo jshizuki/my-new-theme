@@ -82,8 +82,11 @@
             class="
               product-form__submit button button--full-width
               {% if show_dynamic_checkout %}button--secondary{% else %}button--primary{% endif %}
-              {% comment %} if there's stock available, change button to green {% endcomment %}
-              {% if product.selected_or_first_available_variant.available %}button-green{% endif %}
+              {% comment %} Task A {% endcomment %}
+              {% unless product.selected_or_first_available_variant.available == false %}
+                button-green
+              {% endunless %}
+              {% comment %} End of Task A {% endcomment %}
             "
             {% if product.selected_or_first_available_variant.available == false or quantity_rule_soldout %}
               disabled
