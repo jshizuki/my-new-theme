@@ -110,7 +110,10 @@
 
           <!-- Display the size description for the first available variant -->
           <div id="size-description">
-            {% assign size_metafield_key = 'description_' | append: product.selected_variant.option1 | downcase %}
+            {% assign size_metafield_key = 'description_'
+              | append: product.selected_or_first_available_variant.option1
+              | downcase
+            %}
             <p>{{ product.metafields.size[size_metafield_key] }}</p>
           </div>
 
