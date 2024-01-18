@@ -82,8 +82,11 @@
             class="
               product-form__submit button button--full-width
               {% if show_dynamic_checkout %}button--secondary{% else %}button--primary{% endif %}
-              {% comment %} if there's stock available, change button to green {% endcomment %}
-              {% if product.selected_or_first_available_variant.available %}button-green{% endif %}
+              {% comment %} Task A {% endcomment %}
+              {% unless product.selected_or_first_available_variant.available == false %}
+                button-green
+              {% endunless %}
+              {% comment %} End of Task A {% endcomment %}
             "
             {% if product.selected_or_first_available_variant.available == false or quantity_rule_soldout %}
               disabled
@@ -98,13 +101,15 @@
             </span>
             {%- render 'loading-spinner' -%}
           </button>
-          {% comment %} If there're less than 5, display "Low stock" {% endcomment %}
-          {% if product.selected_or_first_available_variant.inventory_quantity < 5 %}
-            <p class="stock-status">Low stock</p>
-          {% elsif product.selected_or_first_available_variant.inventory_quantity >= 5 %}
-            <p class="stock-status">Available!</p>
+          {% comment %} Task B {% endcomment %}
+          {% if product.selected_or_first_available_variant.available %}
+            {% if product.selected_or_first_available_variant.inventory_quantity < 5 %}
+              <p>Low stock</p>
+            {% elsif product.selected_or_first_available_variant.inventory_quantity >= 5 %}
+              <p>Available!</p>
+            {% endif %}
           {% endif %}
-          {% comment %} end of task b {% endcomment %}
+          {% comment %} End of task b {% endcomment %}
 
           {% comment %} Task C {% endcomment %}
 
