@@ -104,9 +104,9 @@
           {% comment %} Task B {% endcomment %}
           {% if product.selected_or_first_available_variant.available %}
             {% if product.selected_or_first_available_variant.inventory_quantity < 5 %}
-              <p>Low stock</p>
+              <p class="stock-status">Low stock</p>
             {% elsif product.selected_or_first_available_variant.inventory_quantity >= 5 %}
-              <p>Available!</p>
+              <p class="stock-status">Available!</p>
             {% endif %}
           {% endif %}
           {% comment %} End of task b {% endcomment %}
@@ -126,6 +126,7 @@
           <script>
             const allSizeButtons = document.querySelectorAll('.size-button');
             const sizeDescriptionContainer = document.getElementById('size-description');
+            const stockStatus = document.querySelector('.stock-status');
 
             const sizeDescriptions = {
               s: '{{ product.metafields.size.description_s }}',
@@ -133,10 +134,32 @@
               l: '{{ product.metafields.size.description_l }}',
             };
 
-            const handleClick = (event) => {
-              const selectedSizeVariant = event.target.value.toLowerCase();
-              const content = `<p>${sizeDescriptions[selectedSizeVariant]}</p>`;
+            const stockInformation = {
+              {% for variant in product.variants %}
+                "{{ variant.title }}": {{ variant.inventory_quantity }},
+              {% endfor %}
+            };
+
+            const updateSizeInfo = (selectedSizeVariant) => {
+              const content = `<p>${sizeDescriptions[selectedSizeVariant.toLowerCase()]}</p>`;
+
+              if (stockInformation[selectedSizeVariant] === 0) {
+                setStockInfo('', content);
+              } else if (stockInformation[selectedSizeVariant] < 5) {
+                setStockInfo('Low stock', content);
+              } else {
+                setStockInfo('Available!', content);
+              }
+            };
+
+            const setStockInfo = (status, content) => {
+              stockStatus.innerHTML = status;
               sizeDescriptionContainer.innerHTML = content;
+            };
+
+            const handleClick = (event) => {
+              const selectedSizeVariant = event.target.value;
+              updateSizeInfo(selectedSizeVariant);
             };
 
             allSizeButtons.forEach((sizeButton) => {
