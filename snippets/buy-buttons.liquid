@@ -127,9 +127,15 @@
             const allSizeButtons = document.querySelectorAll('.size-button');
             const sizeDescriptionContainer = document.getElementById('size-description');
 
+            const sizeDescriptions = {
+              s: '{{ product.metafields.size.description_s }}',
+              m: '{{ product.metafields.size.description_m }}',
+              l: '{{ product.metafields.size.description_l }}',
+            };
+
             const handleClick = (event) => {
-              const selectedSizeVariant = event.target.value;
-              const content = `<p>これは${selectedSizeVariant}サイズです。</p>`;
+              const selectedSizeVariant = event.target.value.toLowerCase();
+              const content = `<p>${sizeDescriptions[selectedSizeVariant]}</p>`;
               sizeDescriptionContainer.innerHTML = content;
             };
 
